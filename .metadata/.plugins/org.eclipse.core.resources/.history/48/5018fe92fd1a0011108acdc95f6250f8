@@ -1,0 +1,48 @@
+package com.example.jobportal_backend.service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.example.jobportal_backend.dto.ApplicationRequest;
+import com.example.jobportal_backend.entity.Application;
+import com.example.jobportal_backend.repository.ApplicationRepository;
+
+@Service
+public class ApplicationService {
+
+    private final ApplicationRepository repository;
+
+    public ApplicationService(ApplicationRepository repository) {
+        this.repository = repository;
+    }
+
+    public Application apply(ApplicationRequest request) {
+
+        Application application = new Application();
+
+        application.setUserId(request.getUserId());
+        application.setJobId(request.getJobId());
+        application.setStatus(request.getStatus());
+
+        return repository.save(application);
+    }
+
+    public List<Application> getApplications() {
+        return repository.findAll();
+    }
+
+    public List<Application> getApplicantsByJob(Long jobId) {
+        return repository.findByJobId(jobId);
+    }
+
+    public Application updateStatus(Long id, String status) {
+
+        Application application = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Application not found with id: " + id));
+
+        application.setStatus(status);
+
+        return repository.save(application);
+    }
+}

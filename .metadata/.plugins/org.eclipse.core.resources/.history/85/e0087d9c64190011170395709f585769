@@ -1,0 +1,25 @@
+package com.example.jobportal_backend.service;
+
+import com.jobportal.entity.Application;
+import com.jobportal.repository.ApplicationRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class ApplicationService {
+
+    private final ApplicationRepository repository;
+
+    public ApplicationService(ApplicationRepository repository) {
+        this.repository = repository;
+    }
+
+    public Application apply(Application app) {
+        return repository.save(app);
+    }
+
+    public List<Application> getApplications() {
+        return repository.findAll();
+    }
+}

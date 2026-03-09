@@ -1,0 +1,28 @@
+package com.example.jobportal_backend.controller;
+
+import com.jobportal.entity.Company;
+import com.jobportal.service.RecruiterService;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/recruiters")
+public class RecruiterController {
+
+    private final RecruiterService service;
+
+    public RecruiterController(RecruiterService service) {
+        this.service = service;
+    }
+
+    @PostMapping
+    public Company create(@RequestBody Company company) {
+        return service.createCompany(company);
+    }
+
+    @GetMapping
+    public List<Company> getAll() {
+        return service.getCompanies();
+    }
+}

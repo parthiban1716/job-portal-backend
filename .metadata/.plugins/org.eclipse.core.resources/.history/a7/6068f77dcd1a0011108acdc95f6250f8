@@ -1,0 +1,43 @@
+package com.example.jobportal_backend.controller;
+
+import com.example.jobportal_backend.dto.LoginRequest;
+import com.example.jobportal_backend.dto.RegisterRequest;
+import com.example.jobportal_backend.entity.User;
+import com.example.jobportal_backend.service.AuthService;
+import com.example.jobportal_backend.service.UserService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/auth")
+public class AuthController {
+
+    private final UserService userService;
+
+    @Autowired
+    private AuthService authService;
+
+    public AuthController(UserService userService) {
+        this.userService = userService;
+    }
+
+    // REGISTER
+    @PostMapping("/register")
+    public User register(@RequestBody RegisterRequest request) {
+
+        User user = new User();
+        user.setName(request.getName());
+        user.setEmail(request.getEmail());
+        user.setPassword(request.getPassword());
+        user.setRole(request.getRole());
+
+        return userService.register(user);
+    }
+
+    // LOGIN
+    @PostMapping("/login")
+    public User login(@RequestBody LoginRequest request){
+        return authService.login(request.getEmail(), request.getPassword());
+    }
+}

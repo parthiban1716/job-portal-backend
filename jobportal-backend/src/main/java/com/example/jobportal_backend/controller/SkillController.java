@@ -1,0 +1,49 @@
+package com.example.jobportal_backend.controller;
+
+import com.example.jobportal_backend.dto.ApiResponse;
+import com.example.jobportal_backend.dto.SkillRequest;
+import com.example.jobportal_backend.entity.Skill;
+import com.example.jobportal_backend.repository.SkillRepository;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/skills")
+public class SkillController {
+
+    private final SkillRepository skillRepository;
+
+    public SkillController(SkillRepository skillRepository) {
+        this.skillRepository = skillRepository;
+    }
+
+    // CREATE SKILL
+    @PreAuthorize("hasAnyRole('ADMIN','RECRUITER')")
+    @PostMapping
+    public ResponseEntity<ApiResponse<Skill>> createSkill(@RequestBody SkillRequest request) {
+
+        Skill skill = new Skill();
+        skill.setName(request.getName());
+
+        Skill savedSkill = skillRepository.save(skill);
+
+        return ResponseEntity.ok(
+                new ApiResponse<>(true, "Skill created successfully", savedSkill)
+        );
+    }
+
+    // GET ALL SKILLS
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<Skill>>> getAllSkills() {
+
+        List<Skill> skills = skillRepository.findAll();
+
+        return ResponseEntity.ok(
+                new ApiResponse<>(true, "Skills fetched successfully", skills)
+        );
+    }
+}

@@ -1,0 +1,11 @@
+package com.example.jobportal_backend.repository;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.example.jobportal_backend.entity.Application;
+import com.example.jobportal_backend.entity.Company;
+
+public interface RecruiterRepository extends JpaRepository<Company, Long> {
+	List<Application> findByJobId(Long jobId);
+}

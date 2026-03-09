@@ -1,0 +1,39 @@
+package com.example.jobportal_backend.service;
+
+import org.springframework.stereotype.Service;
+
+import com.example.jobportal_backend.dto.RegisterRequest;
+import com.example.jobportal_backend.entity.User;
+import com.example.jobportal_backend.repository.UserRepository;
+
+@Service
+public class AuthService {
+
+    private final UserRepository userRepository;
+
+    public AuthService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public User register(RegisterRequest request) {
+
+        User user = new User();
+        user.setName(request.getName());
+        user.setEmail(request.getEmail());
+        user.setPassword(request.getPassword());
+        user.setRole(request.getRole());
+
+        return userRepository.save(user);
+    }
+
+    public User login(String email, String password) {
+
+        User user = userRepository.findByEmail(email);
+
+        if(user != null && user.getPassword().equals(password)){
+            return user;
+        }
+
+        throw new RuntimeException("Invalid Email or Password");
+    }
+}

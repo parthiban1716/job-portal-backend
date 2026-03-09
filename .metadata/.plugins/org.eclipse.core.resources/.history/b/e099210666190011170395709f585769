@@ -1,0 +1,5 @@
+package com.example.jobportal_backend.service;
+
+public class EmailService {
+
+}

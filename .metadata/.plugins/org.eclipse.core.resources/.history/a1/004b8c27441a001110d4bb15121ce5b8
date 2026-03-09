@@ -1,0 +1,55 @@
+package com.example.jobportal_backend.controller;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.jobportal_backend.entity.Company;
+import com.example.jobportal_backend.repository.RecruiterRepository;
+import com.example.jobportal_backend.service.RecruiterService;
+
+@RestController
+@RequestMapping("/api/recruiters")
+public class RecruiterController {
+
+    private final RecruiterService service;
+
+    public RecruiterController(RecruiterService service) {
+        this.service = service;
+    }
+
+    @PostMapping
+    public Company create(@RequestBody Company company) {
+        return service.createCompany(company);
+    }
+
+    @GetMapping
+    public List<Company> getAll() {
+        return service.getCompanies();
+    }  
+    @Autowired
+    private RecruiterRepository recruiterRepository;
+
+    // GET recruiter by id
+    @GetMapping("/{id}")
+    public ResponseEntity<Company> getRecruiterById(@PathVariable Long id) {
+
+        Optional<Company> recruiter = recruiterRepository.findById(id);
+
+        if (recruiter.isPresent()) {
+            return ResponseEntity.ok(recruiter.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    // UPDATE recruiter by id
+    
+}

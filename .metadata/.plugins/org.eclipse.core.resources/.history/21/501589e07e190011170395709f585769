@@ -1,0 +1,21 @@
+package com.jobportal.controller;
+
+import com.jobportal.util.FileUploadUtil;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
+
+@RestController
+@RequestMapping("/api/files")
+public class FileUploadController {
+
+    @PostMapping(value = "/upload", consumes = "multipart/form-data")
+    public String uploadResume(@RequestParam("file") MultipartFile file) throws IOException {
+
+        String uploadDir = "uploads/resumes";
+
+        String fileName = FileUploadUtil.uploadFile(uploadDir, file);
+
+        return "File uploaded successfully: " + fileName;
+    }
+}

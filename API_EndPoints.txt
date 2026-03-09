@@ -1,0 +1,61 @@
+User + Auth controller
+*****************
+GET		/api/users/{id}
+PUT		/api/users/{id}
+GET		/api/users
+
+POST	/api/auth/register
+POST	/api/auth/login
+
+Jobs Controller
+*************
+GET			/api/jobs/{id}
+PUT			/api/jobs/{id}
+DELETE		/api/jobs/{id}
+GET			/api/jobs
+POST		/api/jobs
+{
+	{
+  "title": "Backend Developer",
+  "description": "Spring Boot Developer",
+  "location": "Chennai",
+  "salary": 70000,
+  "experience": 2,
+  "skillIds": [1,2]
+}
+} -> this bracket not mandatory 
+GET			/api/jobs/sort
+GET			/api/jobs/skill
+GET			/api/jobs/search
+GET			/api/jobs/page
+GET			/api/jobs/filter
+
+file-upload-controller (Resume)
+*************************
+POST  /api/files/upload
+GET	   /api/files/download/{fileName}
+GET  /api/files/view/{fileName}
+
+Application Controller
+******************
+PUT		/api/applications/{id}/status
+GET		/api/applications
+POST	/api/applications
+GET		/api/applications/job/{jobId}
+
+Dashboard-controller
+*****************
+GET /api/dashboard/stats
+
+Recuiter Controller
+****************
+GET			/api/recruiters/{id}
+PUT			/api/recruiters/{id}
+DELETE		/api/recruiters/{id}
+GET			/api/recruiters
+POST		/api/recruiters
+
+Skill Controller
+*************
+GET		/api/skills
+POST	/api/skills

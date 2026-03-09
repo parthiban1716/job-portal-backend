@@ -1,0 +1,10 @@
+package com.example.jobportal_backend.dto;
+
+import lombok.Data;
+
+@Data
+public class ApplicationRequest {
+
+    private Long userId;
+    private Long jobId;
+}

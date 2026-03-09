@@ -1,0 +1,89 @@
+package com.example.jobportal_backend.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.*;
+
+import com.example.jobportal_backend.entity.Job;
+import com.example.jobportal_backend.service.JobService;
+
+@RestController
+@RequestMapping("/api/jobs")
+public class JobController {
+
+    private final JobService jobService;
+
+    @Autowired
+    public JobController(JobService jobService) {
+        this.jobService = jobService;
+    }
+
+    // CREATE JOB
+    @PostMapping
+    public Job createJob(@RequestBody Job job) {
+        return jobService.postJob(job);
+    }
+
+    // GET ALL JOBS
+    @GetMapping
+    public List<Job> getJobs() {
+        return jobService.getJobs();
+    }
+
+    // GET JOB BY ID
+    @GetMapping("/{id}")
+    public Job getJobById(@PathVariable Long id) {
+        return jobService.getJobById(id);
+    }
+
+    // UPDATE JOB
+    @PutMapping("/{id}")
+    public Job updateJob(@PathVariable Long id, @RequestBody Job job) {
+        return jobService.updateJob(id, job);
+    }
+
+    // DELETE JOB
+    @DeleteMapping("/{id}")
+    public String deleteJob(@PathVariable Long id) {
+        jobService.deleteJob(id);
+        return "Job deleted successfully";
+    }
+
+    // PAGINATION
+    @GetMapping("/page")
+    public Page<Job> getJobsWithPagination(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
+
+        return jobService.getJobsWithPagination(page, size);
+    }
+
+    // SORT JOBS
+    @GetMapping("/sort")
+    public List<Job> sortJobs(@RequestParam String field) {
+        return jobService.sortJobs(field);
+    }
+
+    // SEARCH JOB
+    @GetMapping("/search")
+    public List<Job> searchJobs(@RequestParam String keyword) {
+        return jobService.searchJobs(keyword);
+    }
+
+    // FILTER JOB
+    @GetMapping("/filter")
+    public List<Job> filterJobs(
+            @RequestParam String location,
+            @RequestParam Double salary) {
+
+        return jobService.filterJobs(location, salary);
+    }
+
+    // GET JOBS BY SKILL
+    @GetMapping("/skill")
+    public List<Job> getJobsBySkill(@RequestParam String skill) {
+        return jobService.getJobsBySkill(skill);
+    }
+}

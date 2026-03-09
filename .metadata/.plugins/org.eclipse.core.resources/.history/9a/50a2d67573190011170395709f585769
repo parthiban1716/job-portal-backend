@@ -1,0 +1,36 @@
+package com.example.jobportal_backend.service;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
+import com.example.jobportal_backend.entity.User;
+import com.example.jobportal_backend.repository.UserRepository;
+
+@Service
+public class UserService {
+
+    private final UserRepository userRepository;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public User register(User user) {
+        return userRepository.save(user);
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+    public User login(String email, String password) {
+
+        Optional<User> user = userRepository.findByEmail(email);
+
+        if(user != null && user.getPassword().equals(password)){
+            return user;
+        }
+
+        throw new RuntimeException("Invalid Email or Password");
+    }
+}

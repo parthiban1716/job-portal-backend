@@ -1,0 +1,50 @@
+package com.example.jobportal_backend.security;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+
+import java.util.Date;
+
+public class JwtUtil {
+
+    private static final String SECRET = "jobportalSecretKey123456";
+
+    // Generate Token
+    public static String generateToken(String email, String role) {
+
+        return Jwts.builder()
+                .setSubject(email)
+                .claim("role", role)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + 86400000)) // 1 day
+                .signWith(SignatureAlgorithm.HS256, SECRET)
+                .compact();
+    }
+
+    // Extract email
+    public static String extractEmail(String token) {
+        return extractClaims(token).getSubject();
+    }
+
+    // Extract role
+    public static String extractRole(String token) {
+        return extractClaims(token).get("role", String.class);
+    }
+
+    // Validate token
+    public static boolean validateToken(String token) {
+        try {
+            extractClaims(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private static Claims extractClaims(String token) {
+        return Jwts.parser()
+                .setSigningKey(SECRET)
+                .parseClaimsJws(token)
+                .getBody();
+    }
+}

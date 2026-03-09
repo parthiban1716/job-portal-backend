@@ -1,0 +1,139 @@
+package com.example.jobportal_backend.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import com.example.jobportal_backend.dto.ApiResponse;
+import com.example.jobportal_backend.dto.JobRequest;
+import com.example.jobportal_backend.entity.Job;
+import com.example.jobportal_backend.service.JobService;
+
+@RestController
+@RequestMapping("/api/jobs")
+public class JobController {
+
+  private final JobService jobService;
+
+  @Autowired
+  public JobController(JobService jobService) {
+    this.jobService = jobService;
+  }
+
+  // CREATE JOB
+  @PreAuthorize("hasRole('RECRUITER')")
+  @PostMapping
+  public ResponseEntity<ApiResponse<Job>> createJob(@RequestBody JobRequest request) {
+
+    Job job = jobService.postJob(request);
+
+    return ResponseEntity.status(HttpStatus.CREATED)
+        .body(new ApiResponse<>(true, "Job created successfully", job));
+  }
+
+  // GET ALL JOBS
+  @GetMapping
+  public ResponseEntity<ApiResponse<List<Job>>> getJobs() {
+
+    List<Job> jobs = jobService.getJobs();
+
+    return ResponseEntity.ok(
+        new ApiResponse<>(true, "Jobs fetched successfully", jobs));
+  }
+
+  // UPDATE JOB
+  @PreAuthorize("hasRole('RECRUITER')")
+  @PutMapping("/{id}")
+  public ResponseEntity<ApiResponse<Job>> updateJob(@PathVariable Long id,
+      @RequestBody JobRequest request) {
+
+    Job updatedJob = jobService.updateJob(id, request);
+
+    return ResponseEntity.ok(
+        new ApiResponse<>(true, "Job updated successfully", updatedJob));
+  }
+
+  // GET JOB BY ID
+  @GetMapping("/{id}")
+  public ResponseEntity<ApiResponse<Job>> getJobById(@PathVariable Long id) {
+
+    Job job = jobService.getJobById(id);
+
+    return ResponseEntity.ok(
+        new ApiResponse<>(true, "Job fetched successfully", job));
+  }
+
+  // DELETE JOB
+  @PreAuthorize("hasRole('RECRUITER')")
+  @DeleteMapping("/{id}")
+  public ResponseEntity<ApiResponse<String>> deleteJob(@PathVariable Long id) {
+
+    jobService.deleteJob(id);
+
+    return ResponseEntity.ok(
+        new ApiResponse<>(true, "Job deleted successfully", null));
+  }
+
+  // PAGINATION
+  @GetMapping("/page")
+  public ResponseEntity<ApiResponse<Page<Job>>> getJobsWithPagination(
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "5") int size,
+      @RequestParam(defaultValue = "id") String sortBy) {
+
+    Page<Job> jobs = jobService.getJobsWithPagination(page, size, sortBy);
+
+    return ResponseEntity.ok(
+        new ApiResponse<>(true, "Jobs fetched with pagination", jobs));
+  }
+
+  // SORT JOBS
+  @GetMapping("/sort")
+  public ResponseEntity<ApiResponse<List<Job>>> sortJobs(@RequestParam String field) {
+
+    List<Job> jobs = jobService.sortJobs(field);
+
+    return ResponseEntity.ok(
+        new ApiResponse<>(true, "Jobs sorted successfully", jobs));
+  }
+
+  // SEARCH JOB
+  @GetMapping("/search")
+  public ResponseEntity<ApiResponse<List<Job>>> searchJobs(@RequestParam String keyword) {
+
+    List<Job> jobs = jobService.searchJobs(keyword);
+
+    return ResponseEntity.ok(
+        new ApiResponse<>(true, "Search results fetched", jobs));
+  }
+
+  // FILTER JOB
+  @GetMapping("/filter")
+  public ResponseEntity<ApiResponse<List<Job>>> filterJobs(
+      @RequestParam String location,
+      @RequestParam Double salary) {
+
+    List<Job> jobs = jobService.filterJobs(location, salary);
+
+    return ResponseEntity.ok(
+        new ApiResponse<>(true, "Filtered jobs fetched", jobs));
+  }
+
+  // GET JOBS BY SKILL
+  @GetMapping("/skill")
+  public ResponseEntity<ApiResponse<List<Job>>> getJobsBySkill(
+      @RequestParam String skill) {
+
+    List<Job> jobs = jobService.getJobsBySkill(skill);
+
+    return ResponseEntity.ok(
+        new ApiResponse<>(true, "Jobs fetched by skill", jobs));
+  }
+}

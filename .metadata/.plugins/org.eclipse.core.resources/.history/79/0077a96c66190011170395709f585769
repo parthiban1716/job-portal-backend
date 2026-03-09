@@ -1,0 +1,17 @@
+package com.example.jobportal_backend.security;
+
+import java.util.Date;
+
+public class JwtUtil {
+
+    private static final String SECRET = "secret123";
+
+    public static String generateToken(String email) {
+
+        return Jwts.builder()
+                .setSubject(email)
+                .setIssuedAt(new Date())
+                .signWith(SignatureAlgorithm.HS256, SECRET)
+                .compact();
+    }
+}

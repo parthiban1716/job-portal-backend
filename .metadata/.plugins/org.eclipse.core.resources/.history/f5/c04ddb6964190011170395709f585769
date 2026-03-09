@@ -1,0 +1,25 @@
+package com.example.jobportal_backend.service;
+
+import com.jobportal.entity.Company;
+import com.jobportal.repository.RecruiterRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class RecruiterService {
+
+    private final RecruiterRepository recruiterRepository;
+
+    public RecruiterService(RecruiterRepository recruiterRepository) {
+        this.recruiterRepository = recruiterRepository;
+    }
+
+    public Company createCompany(Company company) {
+        return recruiterRepository.save(company);
+    }
+
+    public List<Company> getCompanies() {
+        return recruiterRepository.findAll();
+    }
+}

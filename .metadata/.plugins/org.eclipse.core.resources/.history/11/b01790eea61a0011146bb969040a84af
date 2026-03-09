@@ -1,0 +1,29 @@
+package com.example.jobportal_backend.service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.example.jobportal_backend.entity.Job;
+import com.example.jobportal_backend.entity.Skill;
+import com.example.jobportal_backend.repository.JobRepository;
+import com.example.jobportal_backend.repository.SkillRepository;
+
+@Service
+public class JobService {
+
+    private final JobRepository jobRepository;
+    private final SkillRepository skillRepository;
+
+    public JobService(JobRepository jobRepository, SkillRepository skillRepository) {
+        this.jobRepository = jobRepository;
+        this.skillRepository = skillRepository;
+    }
+
+   
+
+    // Get all jobs
+    public List<Job> getJobs() {
+        return jobRepository.findAll();
+    }
+}

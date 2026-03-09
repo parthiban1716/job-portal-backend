@@ -1,0 +1,5 @@
+package com.example.jobportal_backend.config;
+
+public class MailConfig {
+
+}

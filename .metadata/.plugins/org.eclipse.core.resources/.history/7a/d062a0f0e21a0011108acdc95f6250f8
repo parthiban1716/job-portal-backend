@@ -1,0 +1,6 @@
+package com.example.jobportal_backend.security;
+@Configuration
+@EnableGlobalMethodSecurity
+public class MethodSecurityConfig {
+
+}

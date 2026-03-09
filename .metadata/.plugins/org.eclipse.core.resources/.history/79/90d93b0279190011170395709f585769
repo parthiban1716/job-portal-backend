@@ -1,0 +1,19 @@
+package com.example.jobportal_backend.controller;
+
+@RestController
+@RequestMapping("/api/files")
+public class FileUploadController {
+
+    @PostMapping("/upload")
+    public String uploadResume(@RequestParam("file") MultipartFile file) {
+
+        String uploadDir = "uploads/resumes";
+
+        try {
+            String fileName = FileUploadUtil.uploadFile(uploadDir, file);
+            return "File uploaded successfully: " + fileName;
+        } catch (Exception e) {
+            return "Upload failed";
+        }
+    }
+}

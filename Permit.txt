@@ -1,0 +1,60 @@
+[
+  {
+    "name": "Parthi",
+    "email": "Parthi@gmail.com",
+    "password": "123456",
+    "role": "RECRUITER"
+  },
+  {
+    "name": "Mohan",
+    "email": "Mohan@gmail.com",
+    "password": "12345",
+    "role": "CANDIDATE"
+  },
+  {
+    "name": "Nithya",
+    "email": "Nithya1716@gmail.com",
+    "password": "Nithya1716",
+    "role": "CANDIDATE"
+  },
+  {
+    "name": "Admin",
+    "email": "admin@gmail.com",
+    "password": "123",
+    "role": "ADMIN"
+  }
+]
+
+
+ CANDIDATE Permissions (Users)
+***************************
+API						Purpose
+
+GET /api/jobs				Jobs browse
+GET	/api/jobs/search		Search jobs
+GET /api/jobs/filter		Filter jobs
+POST /api/applications		Apply job
+GET /api/applications		Own applications
+POST /api/files/upload		Resume upload
+
+RECRUITER Permissions
+********************
+API								Purpose
+
+POST /api/jobs					Create job 
+PUT /api/jobs/{id}				Update job ? (Job_Id)	
+DELETE /api/jobs/{id}				Delete job (Job_Id)
+GET /api/applications/job/{jobId}	View applications (Job_Id)
+PUT /api/applications/{id}/status	Accept / Reject candidate  (Provide id)
+GET /api/dashboard/stats			Recruiter dashboard
+
+ ADMIN Permissions
+****************
+API								Purpose
+
+GET /api/users					View users
+DELETE /api/users/{id}			Delete users
+POST /api/skills					Create skill
+GET /api/skills					View skills
+GET /api/applications				All applications
+GET /api/dashboard/stats			System stats

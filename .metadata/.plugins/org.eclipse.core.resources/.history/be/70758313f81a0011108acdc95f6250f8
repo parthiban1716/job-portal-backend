@@ -1,0 +1,23 @@
+@RestController
+@RequestMapping("/api/auth")
+public class AuthController {
+
+    @Autowired
+    private AuthService authService;
+
+    // REGISTER
+    @PostMapping("/register")
+    public User register(@RequestBody RegisterRequest request) {
+
+        return authService.register(request);
+    }
+
+    // LOGIN
+    @PostMapping("/login")
+    public String login(@RequestBody LoginRequest request){
+
+        User user = authService.login(request.getEmail(), request.getPassword());
+
+        return JwtUtil.generateToken(user.getEmail(), user.getRole());
+    }
+}

@@ -1,0 +1,46 @@
+package com.example.jobportal_backend.security;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.web.SecurityFilterChain;
+
+@Configuration
+public class SecurityConfig {
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
+        http
+            .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(auth -> auth
+
+                    // Auth APIs
+                    .requestMatchers("/api/auth/**").permitAll()
+
+                    // File APIs
+                    .requestMatchers("/api/files/upload").permitAll()
+                    .requestMatchers("/api/files/download/**").permitAll()  // ⭐ ADD THIS LINE
+
+                    // Swagger APIs
+                    .requestMatchers(
+                            "/v3/api-docs/**",
+                            "/swagger-ui/**",
+                            "/swagger-ui.html"
+                    ).permitAll()
+
+                    // Project APIs (testing purpose)
+                    .requestMatchers(
+                            "/api/jobs/**",
+                            "/api/users/**",
+                            "/api/recruiters/**",
+                            "/api/applications/**"
+                    ).permitAll()
+
+                    // Any other request need authentication
+                    .anyRequest().authenticated()
+            );
+
+        return http.build();
+    }
+}
